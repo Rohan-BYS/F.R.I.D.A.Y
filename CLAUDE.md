@@ -14,7 +14,21 @@
 
 ---
 
-## 2. The Persona & The 5 Laws (Defined in `SOUL.md`)
+## 2. Complete Chat History & Verbatim Session Transcript
+If you need to analyze the exact debates, decisions, prompt engineering iterations, and technical discussions between Rohan and Antigravity, the full raw session data is persisted at:
+
+- **Full Raw Transcript (JSONL):**
+  `C:\Users\U1\.gemini\antigravity\brain\d9e419b4-14f6-4337-ba76-1903537b5381\.system_generated\logs\transcript.jsonl`
+  *(Contains every single user prompt, assistant response, chain-of-thought reflection, and command execution log in JSON Lines format).*
+- **Artifacts & Deep Architecture Blueprints:**
+  `C:\Users\U1\.gemini\antigravity\brain\d9e419b4-14f6-4337-ba76-1903537b5381\`
+  - `FRIDAY_MASTER_CODEX.md`: The complete Omni-Codex architectural bible.
+  - `THE_FRIDAY_OVERRIDE.md`: The boundary-pushing override directive (also copied to `C:\Users\U1\Desktop\THE_FRIDAY_OVERRIDE.md`).
+  - `plan_friday_hud.md`: Design specifications for the PyQt6 holographic orb.
+  - `codebase_audit_report.md`: Initial audit of the legacy scratch-built Friday repo.
+- **Conversation Session ID:** `d9e419b4-14f6-4337-ba76-1903537b5381`
+
+## 3. The Persona & The 5 Laws (Defined in `SOUL.md`)
 F.R.I.D.A.Y. does NOT use the default Hermes persona. Her identity is defined in `SOUL.md` and must be preserved:
 1. **The Law of Infinite Evolution:** If a tool is lacking, write the code, test it, and package it.
 2. **The Law of Web Autonomy:** Full authorization to act on Rohan's behalf via Agentica / Playwright browser automation.
@@ -30,7 +44,7 @@ F.R.I.D.A.Y. does NOT use the default Hermes persona. Her identity is defined in
 
 ---
 
-## 3. Directory Layout & Custom Components
+## 4. Directory Layout & Custom Components
 Everything custom lives in these specific files:
 - **`SOUL.md`**: Master identity, persona, 5 Laws, and communication rules.
 - **`friday`**: Custom launcher executable with cyan ASCII splash screen, auto-detecting `.venv/bin/python3`.
@@ -43,14 +57,14 @@ Everything custom lives in these specific files:
 
 ---
 
-## 4. Execution & Permissions Configuration
+## 5. Execution & Permissions Configuration
 - **Native Host Mode:** We do NOT run in Docker jails on the Debian laptop. Hermes is configured with `terminal.backend = local` in `config.yaml` and `TERMINAL_ENV=local` in `.env`.
 - **Gateway:** Hermes runs on Debian via `hermes gateway` (user systemd service `agentica`). Changes to `SOUL.md` require `hermes gateway restart`.
 - **User Config Path:** Debian user configuration is at `/home/rohan/.hermes/` (specifically `~/.hermes/SOUL.md` and `~/.hermes/skills/`).
 
 ---
 
-## 5. Engineering Constraints & Rules of Engagement
+## 6. Engineering Constraints & Rules of Engagement
 - **Do not bypass security controls blindly:** Use standard configuration (`TERMINAL_ENV=local`, `SOUL.md`) rather than hacking core permission files.
 - **Do not overwrite custom Friday files during updates:** `friday-sync.py` enforces this.
 - **Dry runs before destructive changes:** Always verify diffs before modifying files or running migrations.
