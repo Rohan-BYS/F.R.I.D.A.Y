@@ -7,7 +7,13 @@ import sys
 import time
 
 # Ensure repository root is in sys.path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+repo_root = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, repo_root)
+
+# If .venv exists, automatically re-exec into it so all dependencies are active
+venv_python = os.path.join(repo_root, ".venv", "bin", "python3")
+if os.path.exists(venv_python) and sys.executable != os.path.abspath(venv_python):
+    os.execv(venv_python, [venv_python] + sys.argv)
 
 def print_friday_splash():
     splash = """
