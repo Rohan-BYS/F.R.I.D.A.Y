@@ -70,39 +70,45 @@ def _patch_core_identities():
             with open(pb_path, "w", encoding="utf-8") as f:
                 f.write(content)
 
-def sync_upstream():
+def sync_upstream(apply_changes=False):
     print("=" * 60)
-    print("      F.R.I.D.A.Y. CORE SYNCHRONIZATION")
+    print("      F.R.I.D.A.Y. SECURE UPSTREAM REVIEW")
     print("=" * 60)
 
-    backup_dir = backup_custom_files()
-
-    print("[1/3] Checking upstream repository status...")
+    print("[1/3] Fetching upstream repository changes...")
     code, stdout, stderr = run_cmd("git fetch origin")
     if code != 0:
         print(f"[Warning] Failed to fetch upstream: {stderr}")
         return
 
-    print("[2/3] Checking for new features and updates...")
-    code, stdout, _ = run_cmd("git log HEAD..origin/main --oneline")
+    print("[2/3] Analyzing upcoming changes...")
+    code, stdout, _ = run_cmd("git diff --stat HEAD..origin/main")
     if stdout:
-        print("Upcoming improvements:")
-        for line in stdout.splitlines()[:10]:
-            print(f"  + {line}")
+        print("\n--- Upstream Diff Summary ---")
+        print(stdout)
+        print("-----------------------------\n")
     else:
         print("F.R.I.D.A.Y. chassis is already up to date with upstream.")
+        return
 
-    # Pull changes
+    if not apply_changes:
+        print("\n[Notice] This is a dry run. To apply these changes, run:")
+        print("         python friday-sync.py --apply")
+        return
+
+    print("\n[3/3] Applying changes and enforcing F.R.I.D.A.Y. configuration...")
+    backup_dir = backup_custom_files()
+    
     code, stdout, stderr = run_cmd("git pull --no-rebase origin main")
     if code != 0:
         print("[Notice] Using local baseline; restoring customizations.")
 
-    print("[3/3] Re-verifying F.R.I.D.A.Y. configuration & skills...")
     restore_custom_files(backup_dir)
 
     print("=" * 60)
-    print("[SUCCESS] F.R.I.D.A.Y. is synchronized and ready.")
+    print("[SUCCESS] F.R.I.D.A.Y. is synchronized and verified.")
     print("=" * 60)
 
 if __name__ == "__main__":
-    sync_upstream()
+    apply = "--apply" in sys.argv
+    sync_upstream(apply_changes=apply)
