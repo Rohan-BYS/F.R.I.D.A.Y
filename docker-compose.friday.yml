@@ -1,0 +1,40 @@
+#
+# F.R.I.D.A.Y. Docker Environment (Debian 13 Base)
+#
+# Usage:
+#   docker compose -f docker-compose.friday.yml build
+#   docker compose -f docker-compose.friday.yml run --rm friday
+#
+services:
+  friday:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: friday-agent:latest
+    container_name: friday-core
+    restart: "no"
+    network_mode: host
+    volumes:
+      - ~/.hermes:/opt/data
+      - ~/.friday:/root/.friday
+    environment:
+      - TERMINAL_ENV=local
+      - HERMES_HOME=/opt/data
+    stdin_open: true
+    tty: true
+    command: ["chat"]
+
+  friday-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: friday-agent:latest
+    container_name: friday-gateway
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ~/.hermes:/opt/data
+    environment:
+      - TERMINAL_ENV=local
+      - HERMES_HOME=/opt/data
+    command: ["gateway", "run"]
