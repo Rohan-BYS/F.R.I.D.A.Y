@@ -15,18 +15,21 @@
 ---
 
 ## 2. Complete Chat History & Verbatim Session Transcript
-If you need to analyze the exact debates, decisions, prompt engineering iterations, and technical discussions between Rohan and Antigravity, the full raw session data is persisted at:
+All raw conversation data, prompt iterations, debates, and architectural documents are copied directly into this repository in `./session_context/`:
 
 - **Full Raw Transcript (JSONL):**
-  `C:\Users\U1\.gemini\antigravity\brain\d9e419b4-14f6-4337-ba76-1903537b5381\.system_generated\logs\transcript.jsonl`
-  *(Contains every single user prompt, assistant response, chain-of-thought reflection, and command execution log in JSON Lines format).*
+  `./session_context/transcript.jsonl`
+  *(Contains every single prompt, assistant response, chain-of-thought reflection, and command execution log in JSON Lines format).*
 - **Artifacts & Deep Architecture Blueprints:**
-  `C:\Users\U1\.gemini\antigravity\brain\d9e419b4-14f6-4337-ba76-1903537b5381\`
-  - `FRIDAY_MASTER_CODEX.md`: The complete Omni-Codex architectural bible.
-  - `THE_FRIDAY_OVERRIDE.md`: The boundary-pushing override directive (also copied to `C:\Users\U1\Desktop\THE_FRIDAY_OVERRIDE.md`).
-  - `plan_friday_hud.md`: Design specifications for the PyQt6 holographic orb.
-  - `codebase_audit_report.md`: Initial audit of the legacy scratch-built Friday repo.
+  - `./FRIDAY_MASTER_CODEX.md` (and `./session_context/FRIDAY_MASTER_CODEX.md`): The complete Omni-Codex architectural bible.
+  - `./session_context/THE_FRIDAY_OVERRIDE.md`: The boundary-pushing override directive.
+  - `./session_context/plan_friday_hud.md`: Design specifications for the PyQt6 holographic orb.
+  - `./session_context/codebase_audit_report.md`: Initial audit of the legacy scratch-built Friday repo.
+  - `./session_context/walkthrough.md`: Initial setup walkthrough.
+- **Original Antigravity Brain Storage:** `C:\Users\U1\.gemini\antigravity\brain\d9e419b4-14f6-4337-ba76-1903537b5381\`
 - **Conversation Session ID:** `d9e419b4-14f6-4337-ba76-1903537b5381`
+
+---
 
 ## 3. The Persona & The 5 Laws (Defined in `SOUL.md`)
 F.R.I.D.A.Y. does NOT use the default Hermes persona. Her identity is defined in `SOUL.md` and must be preserved:
