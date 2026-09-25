@@ -4,10 +4,29 @@ F.R.I.D.A.Y. Agent CLI launcher.
 """
 import os
 import sys
+import time
 
 # Ensure repository root is in sys.path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+def print_friday_splash():
+    splash = """
+    ███████╗ ██████╗  ██╗ ██████╗   █████╗  ██╗   ██╗
+    ██╔════╝ ██╔══██╗ ██║ ██╔══██╗ ██╔══██╗ ╚██╗ ██╔╝
+    █████╗   ██████╔╝ ██║ ██║  ██║ ███████║  ╚████╔╝ 
+    ██╔══╝   ██╔══██╗ ██║ ██║  ██║ ██╔══██║   ╚██╔╝  
+    ██║      ██║  ██║ ██║ ██████╔╝ ██║  ██║    ██║   
+    ╚═╝      ╚═╝  ╚═╝ ╚═╝ ╚═════╝  ╚═╝  ╚═╝    ╚═╝   
+    """
+    print(f"\033[36m{splash}\033[0m")
+    print("\033[1;36m[SYSTEM]\033[0m Initializing F.R.I.D.A.Y. Core Engine...")
+    print("\033[1;36m[SYSTEM]\033[0m Loading Neural Pathways...")
+    print("\033[1;36m[SYSTEM]\033[0m Bypassing Sandboxes (Native Host Mode Enabled)...")
+    print("\033[1;36m[SYSTEM]\033[0m Webhook Nexus & Scheduler Linked.")
+    print("\033[1;32m[SYSTEM]\033[0m F.R.I.D.A.Y. is online and ready.\n")
+
 if __name__ == "__main__":
+    print_friday_splash()
     from hermes_cli.main import main
     main()
+
