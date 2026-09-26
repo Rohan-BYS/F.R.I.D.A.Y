@@ -9,6 +9,10 @@ import sys
 import json
 import time
 
+if sys.platform == "win32":
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
