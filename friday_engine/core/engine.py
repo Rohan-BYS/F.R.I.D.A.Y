@@ -183,6 +183,36 @@ class FridayEngine:
         self.tool_registry.register("install_local_runtime", self.local_models.install_runtime)
         self.tool_registry.register("check_runtime_updates", self.local_models.check_runtime_updates)
 
+        # Register Market Chronos & Financial Intelligence Tools
+        def run_market_chronos_cycle(symbols=None, interval="5m"):
+            """Runs a Market Chronos 5m/10m candle logging and news synchronization cycle to Excel."""
+            from scripts.market_chronos_logger import MarketChronosLogger
+            sym_list = symbols if isinstance(symbols, list) else (symbols.split() if symbols else None)
+            logger_inst = MarketChronosLogger(symbols=sym_list, interval=interval)
+            logger_inst.log_cycle()
+            return f"Market Chronos cycle logged to {logger_inst.excel_path} for interval {interval}."
+
+        def analyze_market_correlation(symbol=None):
+            """Analyzes historical candlestick and news correlation from Excel to forecast future price outlook."""
+            from scripts.market_correlation_analyst import MarketCorrelationAnalyst
+            analyst = MarketCorrelationAnalyst()
+            if symbol:
+                return analyst.analyze_symbol(symbol)
+            return analyst.generate_full_report()
+
+        def scan_live_financial_news():
+            """Scans top Indian financial news portals (Moneycontrol, ET, LiveMint) and scores sentiment."""
+            from scripts.market_chronos_logger import MarketNewsHarvester
+            harvester = MarketNewsHarvester()
+            items = harvester.fetch_latest_news()
+            for it in items:
+                it["sentiment_score"] = harvester.score_sentiment(f"{it['title']} {it['summary']}")
+            return items[:15]
+
+        self.tool_registry.register("market_chronos_log_cycle", run_market_chronos_cycle)
+        self.tool_registry.register("market_correlation_analyze", analyze_market_correlation)
+        self.tool_registry.register("scan_live_financial_news", scan_live_financial_news)
+
     def _initialize_session(self) -> None:
         """Create or ensure persistent session and inject Master Directive if empty."""
         self.memory.create_session(session_id=self.active_session_id, title="Main Session")

@@ -48,3 +48,9 @@ prompt_toolkit
 PyQt6
 sounddevice
 numpy
+
+# Market Chronos, Excel Logging & Quantitative Intelligence
+pandas
+openpyxl
+yfinance
+feedparser

@@ -82,6 +82,7 @@ def show_help():
     table.add_row("friday setup", "Re-run the interactive setup wizard")
     table.add_row("friday update", "Self-update from GitHub + refresh dependencies")
     table.add_row("friday hud", "Launch the desktop orb visualizer")
+    table.add_row("friday market", "5m candle + news surveillance & predictive analysis")
     table.add_row("friday evolve", "Generate a flawless Child Version (Project Phoenix)")
     table.add_row("friday sync", "Auto-merge new features from upstream AI agents")
     table.add_row("friday scan", "Scan the AI landscape for new frameworks to learn")
@@ -117,6 +118,15 @@ def main():
             return
         elif cmd == "scan-market" or cmd == "scan":
             subprocess.run([sys.executable, os.path.join(project_root, "friday-upstream-sync.py")] + sys.argv[2:])
+            return
+        elif cmd == "market":
+            subcmd = sys.argv[2].lower() if len(sys.argv) > 2 else "track"
+            if subcmd == "analyze":
+                subprocess.run([sys.executable, os.path.join(project_root, "scripts", "market_correlation_analyst.py")] + sys.argv[3:])
+            elif subcmd == "track":
+                subprocess.run([sys.executable, os.path.join(project_root, "scripts", "market_chronos_logger.py"), "--daemon"] + sys.argv[3:])
+            else:
+                subprocess.run([sys.executable, os.path.join(project_root, "scripts", "market_chronos_logger.py")] + sys.argv[2:])
             return
         elif cmd == "help" or cmd == "--help" or cmd == "-h":
             show_help()

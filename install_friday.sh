@@ -484,6 +484,7 @@ if [ -f "$FRIDAY_HOME/scripts/seed_omni_skills.py" ]; then
     python "$FRIDAY_HOME/scripts/seed_omni_skills.py" 2>/dev/null || warn "Skill seeding had issues."
     python "$FRIDAY_HOME/scripts/seed_agency_marketing_skills.py" 2>/dev/null || true
     python "$FRIDAY_HOME/scripts/seed_trading_financial_skills.py" 2>/dev/null || true
+    python "$FRIDAY_HOME/scripts/seed_market_intelligence_skills.py" 2>/dev/null || true
     ok "Skills library seeded."
 fi
 
@@ -508,6 +509,7 @@ echo -e "    ${BOLD}friday${RESET}              Start the interactive AI engine"
 echo -e "    ${BOLD}friday voice${RESET}        Start hands-free voice mode"
 echo -e "    ${BOLD}friday hud${RESET}          Launch the desktop holographic HUD"
 echo -e "    ${BOLD}friday setup${RESET}        Re-run the configuration wizard"
+echo -e "    ${BOLD}friday market${RESET}       5m candle + news surveillance & forecast"
 echo -e "    ${BOLD}friday update${RESET}       Self-update from GitHub"
 echo -e "    ${BOLD}friday evolve${RESET}       Generate a flawless Child Version"
 echo -e "    ${BOLD}friday sync${RESET}         Auto-merge new upstream features"
