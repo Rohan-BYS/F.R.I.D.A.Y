@@ -83,6 +83,7 @@ def show_help():
     table.add_row("friday update", "Self-update from GitHub + refresh dependencies")
     table.add_row("friday hud", "Launch the desktop orb visualizer")
     table.add_row("friday market", "5m candle + news surveillance & predictive analysis")
+    table.add_row("friday clean-pdfs", "Delete raw PDFs to free disk space while keeping structured data")
     table.add_row("friday evolve", "Generate a flawless Child Version (Project Phoenix)")
     table.add_row("friday sync", "Auto-merge new features from upstream AI agents")
     table.add_row("friday scan", "Scan the AI landscape for new frameworks to learn")
@@ -127,6 +128,9 @@ def main():
                 subprocess.run([sys.executable, os.path.join(project_root, "scripts", "market_chronos_logger.py"), "--daemon"] + sys.argv[3:])
             else:
                 subprocess.run([sys.executable, os.path.join(project_root, "scripts", "market_chronos_logger.py")] + sys.argv[2:])
+            return
+        elif cmd == "clean-pdfs" or cmd == "purge-pdfs":
+            subprocess.run([sys.executable, os.path.join(project_root, "scripts", "financial_filings_harvester.py"), "--clean-pdfs"])
             return
         elif cmd == "help" or cmd == "--help" or cmd == "-h":
             show_help()
