@@ -11,6 +11,12 @@ from pathlib import Path
 from typing import List, Optional
 import yaml
 from pydantic import BaseModel, Field
+from dotenv import load_dotenv
+
+# Automatically load environment variables from .env
+load_dotenv()
+_project_root = Path(__file__).resolve().parent.parent
+load_dotenv(_project_root / ".env")
 
 
 class SystemConfig(BaseModel):
@@ -23,7 +29,7 @@ class SystemConfig(BaseModel):
 
 
 class GeminiConfig(BaseModel):
-    api_key: str = Field(default_factory=lambda: os.getenv("GEMINI_API_KEY", ""))
+    api_key: str = Field(default_factory=lambda: os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY", ""))
     model: str = "gemini-2.0-flash"
     timeout: int = 30
     temperature: float = 0.2
