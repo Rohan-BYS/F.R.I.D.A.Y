@@ -19,7 +19,7 @@ llm:
     - "local"
   gemini:
     api_key: ""
-    model: "gemini-2.0-flash"
+    model: "gemini-2.5-flash"
     timeout: 30
     temperature: 0.2
   claude:

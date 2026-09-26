@@ -146,4 +146,11 @@ def load_config(config_path: Optional[str | Path] = None) -> FridayConfig:
             print(f"[WARN] Failed to load config from {config_path}: {exc}. Using defaults.")
 
     config = FridayConfig.model_validate(raw_data)
+    # Ensure empty strings from YAML fall back to environment variables
+    if not config.llm.gemini.api_key:
+        config.llm.gemini.api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY", "")
+    if not config.llm.claude.api_key:
+        config.llm.claude.api_key = os.getenv("ANTHROPIC_API_KEY") or os.getenv("CLAUDE_API_KEY", "")
+    if not config.llm.openai.api_key:
+        config.llm.openai.api_key = os.getenv("OPENAI_API_KEY", "")
     return config
