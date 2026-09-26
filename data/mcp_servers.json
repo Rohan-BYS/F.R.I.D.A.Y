@@ -2,38 +2,150 @@
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "workspace"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "workspace"
+      ],
       "description": "Local workspace file system access"
     },
     "memory": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
       "description": "Persistent knowledge graph memory"
     },
     "fetch": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-fetch"
+      ],
       "description": "High-fidelity HTML and Markdown web fetching"
     },
     "git": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-git"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-git"
+      ],
       "description": "Local git repository and version control management"
     },
     "sqlite": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sqlite", "data/market_chronos/market_chronos.db"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sqlite",
+        "data/market_chronos/market_chronos.db"
+      ],
       "description": "Local SQLite database SQL querying engine"
     },
     "puppeteer": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-puppeteer"
+      ],
       "description": "Headless browser automation for form submission, web apps & backlink verification"
     },
     "open-whatsapp": {
       "command": "node",
-      "args": ["../open-whatsapp-mcp/src/mcp-server.js"],
+      "args": [
+        "../open-whatsapp-mcp/src/mcp-server.js"
+      ],
       "description": "WhatsApp automation and messaging"
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "description": "GitHub repository management (Requires GITHUB_PERSONAL_ACCESS_TOKEN)",
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": ""
+      }
+    },
+    "notion": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-notion"
+      ],
+      "description": "Notion workspace integration (Requires NOTION_API_KEY)",
+      "env": {
+        "NOTION_API_KEY": ""
+      }
+    },
+    "slack": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-slack"
+      ],
+      "description": "Slack messaging and workspace management (Requires SLACK_BOT_TOKEN)",
+      "env": {
+        "SLACK_BOT_TOKEN": ""
+      }
+    },
+    "jira": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-jira"
+      ],
+      "description": "Atlassian Jira Server (Requires JIRA_API_TOKEN, JIRA_EMAIL, JIRA_BASE_URL)",
+      "env": {
+        "JIRA_API_TOKEN": "",
+        "JIRA_EMAIL": "",
+        "JIRA_BASE_URL": ""
+      }
+    },
+    "stripe": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-stripe"
+      ],
+      "description": "Stripe payment and invoice management (Requires STRIPE_API_KEY)",
+      "env": {
+        "STRIPE_API_KEY": ""
+      }
+    },
+    "linear": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-linear"
+      ],
+      "description": "Linear issue tracking (Requires LINEAR_API_KEY)",
+      "env": {
+        "LINEAR_API_KEY": ""
+      }
+    },
+    "google-drive": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-google-drive"
+      ],
+      "description": "Google Drive integration (Requires GOOGLE_DRIVE_CREDENTIALS)",
+      "env": {
+        "GOOGLE_DRIVE_CREDENTIALS": ""
+      }
+    },
+    "canva": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-canva-server"
+      ],
+      "description": "Canva design automation (Requires CANVA_API_KEY)",
+      "env": {
+        "CANVA_API_KEY": ""
+      }
     }
   }
 }
