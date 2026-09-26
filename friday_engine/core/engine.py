@@ -209,9 +209,16 @@ class FridayEngine:
                 it["sentiment_score"] = harvester.score_sentiment(f"{it['title']} {it['summary']}")
             return items[:15]
 
+        def harvest_company_financials(symbol: str):
+            """Scrapes balance sheet, P&L, cash flows for US/Indian stock, saves dossier locally, returns path."""
+            from scripts.financial_filings_harvester import FinancialFilingsHarvester
+            harvester = FinancialFilingsHarvester()
+            return harvester.harvest_financial_dossier(symbol)
+
         self.tool_registry.register("market_chronos_log_cycle", run_market_chronos_cycle)
         self.tool_registry.register("market_correlation_analyze", analyze_market_correlation)
         self.tool_registry.register("scan_live_financial_news", scan_live_financial_news)
+        self.tool_registry.register("harvest_company_financials", harvest_company_financials)
 
     def _initialize_session(self) -> None:
         """Create or ensure persistent session and inject Master Directive if empty."""

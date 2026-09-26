@@ -28,28 +28,33 @@ sys.path.insert(0, str(PROJECT_ROOT))
 DATA_DIR = PROJECT_ROOT / "data" / "market_chronos"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-# High-impact Indian Financial RSS Feeds
+# High-impact Indian & US Financial RSS Feeds
 RSS_FEEDS = {
+    # India
     "Moneycontrol_Top": "https://www.moneycontrol.com/rss/latestnews.xml",
     "Moneycontrol_Markets": "https://www.moneycontrol.com/rss/marketreports.xml",
-    "EconomicTimes_Markets": "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
     "EconomicTimes_Stocks": "https://economictimes.indiatimes.com/markets/stocks/rssfeeds/2146842.cms",
-    "LiveMint_Markets": "https://www.livemint.com/rss/markets",
     "LiveMint_Companies": "https://www.livemint.com/rss/companies",
-    "BusinessStandard": "https://www.business-standard.com/rss/markets-106.rss",
+    # US / Wall Street
+    "YahooFinance_US": "https://finance.yahoo.com/news/rssindex",
+    "Reuters_Business": "https://www.reutersagency.com/feed/?taxonomy=markets&post_type=best",
+    "MarketWatch_Top": "https://feeds.content.dowjones.io/public/rss/mw_topstories",
+    "CNBC_Markets": "https://search.cnbc.com/rs/search/view.html?partnerId=2000&keywords=markets&sort=date",
 }
 
 DEFAULT_WATCHLIST = [
+    # Top India (NSE)
     "TATAMOTORS.NS",
     "RELIANCE.NS",
     "HDFCBANK.NS",
     "INFY.NS",
     "ICICIBANK.NS",
-    "TCS.NS",
-    "ITC.NS",
-    "SBIN.NS",
-    "BHARTIARTL.NS",
-    "LICI.NS",
+    # Top US (NYSE / NASDAQ)
+    "NVDA",
+    "AAPL",
+    "TSLA",
+    "MSFT",
+    "SPY",
 ]
 
 
@@ -121,6 +126,7 @@ class MarketNewsHarvester:
         """Check if news item relates to symbol or its parent entity."""
         clean_sym = symbol.replace(".NS", "").replace(".BO", "").lower()
         company_aliases = {
+            # India
             "tatamotors": ["tata motors", "jlr", "jaguar land rover", "ta-mo", "tatamotors"],
             "reliance": ["reliance", "ril", "mukesh ambani", "jio", "reliance retail"],
             "hdfcbank": ["hdfc", "hdfc bank", "sashidhar jagdishan"],
@@ -130,6 +136,15 @@ class MarketNewsHarvester:
             "itc": ["itc", "itc hotels", "sanjiv puri"],
             "sbin": ["sbi", "state bank of india", "dinesh khara"],
             "bhartiartl": ["airtel", "bharti airtel", "sunil mittal"],
+            # US
+            "nvda": ["nvidia", "nvda", "jensen huang", "blackwell", "h100"],
+            "aapl": ["apple", "aapl", "tim cook", "iphone", "ios"],
+            "tsla": ["tesla", "tsla", "elon musk", "cybertruck", "gigafactory"],
+            "msft": ["microsoft", "msft", "satya nadella", "azure", "copilot"],
+            "spy": ["s&p 500", "s&p", "spy", "wall street", "us markets"],
+            "amzn": ["amazon", "amzn", "andy jassy", "aws"],
+            "googl": ["google", "alphabet", "sundar pichai", "gemini"],
+            "meta": ["meta", "facebook", "mark zuckerberg", "instagram"],
         }
         aliases = company_aliases.get(clean_sym, [clean_sym])
         text_lower = text.lower()
@@ -257,6 +272,27 @@ class MarketChronosLogger:
 
             candle["News_Event"] = " | ".join(matched_news) if matched_news else "None"
             candle["News_Sentiment"] = round(sentiment_score, 2) if matched_news else 0.0
+
+            # Check for scraped Financial Records / Balance Sheet Dossier
+            try:
+                from scripts.financial_filings_harvester import FinancialFilingsHarvester
+                filings_harvester = FinancialFilingsHarvester()
+                clean_s = sym.replace(".NS", "").replace(".BO", "").upper()
+                sym_dossier_dir = PROJECT_ROOT / "data" / "financial_filings" / clean_s
+                dossier_files = list(sym_dossier_dir.glob("*.json")) if sym_dossier_dir.exists() else []
+                if dossier_files:
+                    latest_dossier = sorted(dossier_files)[-1]
+                    with open(latest_dossier, "r", encoding="utf-8") as df_f:
+                        d_data = json.load(df_f)
+                    candle["Financial_Report_Path"] = str(latest_dossier.relative_to(PROJECT_ROOT)).replace("\\", "/")
+                    candle["Key_Financial_Metrics"] = d_data.get("key_metrics_summary", "Available")
+                else:
+                    candle["Financial_Report_Path"] = "None"
+                    candle["Key_Financial_Metrics"] = "No Filing Harvested"
+            except Exception:
+                candle["Financial_Report_Path"] = "None"
+                candle["Key_Financial_Metrics"] = "N/A"
+
             cycle_records.append(candle)
 
         if not cycle_records:
