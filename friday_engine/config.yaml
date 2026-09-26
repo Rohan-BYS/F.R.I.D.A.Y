@@ -1,0 +1,76 @@
+# ==============================================================================
+# F.R.I.D.A.Y. Engine Configuration
+# Fully Recursive Intelligent Digital Autonomous Yield
+# ==============================================================================
+
+system:
+  name: "F.R.I.D.A.Y."
+  version: "1.0.0"
+  creator: "Rohan"
+  environment: "development"
+  log_level: "INFO"
+  data_dir: "data"
+
+llm:
+  priority:
+    - "gemini"
+    - "claude"
+    - "openai"
+    - "local"
+  gemini:
+    api_key: ""
+    model: "gemini-2.0-flash"
+    timeout: 30
+    temperature: 0.2
+  claude:
+    api_key: ""
+    model: "claude-3-5-sonnet-20241022"
+    timeout: 30
+    temperature: 0.2
+  openai:
+    api_key: ""
+    model: "gpt-4o"
+    base_url: "https://api.openai.com/v1"
+    timeout: 30
+    temperature: 0.2
+  local:
+    base_url: "http://127.0.0.1:8000/v1"
+    model: "llama-3-8b-instruct"
+    timeout: 60
+    temperature: 0.2
+
+memory:
+  db_path: "data/friday_state.db"
+  busy_timeout_ms: 5000
+  skills_dir: "data/skills"
+
+agentica:
+  mode: "http" # "http" or "stdio"
+  endpoint: "http://127.0.0.1:8000"
+  timeout: 30
+  headless: false
+
+tool_forge:
+  enabled: true
+  sandbox_dir: "data/forge_sandbox"
+  generated_tools_dir: "friday_engine/tool_forge/custom_tools"
+  test_timeout_seconds: 15
+  auto_register: true
+
+sub_agents:
+  max_concurrent_workers: 4
+  default_worker_timeout: 300
+  enable_multiprocessing: true
+
+security:
+  vault_file: "data/identity_vault.enc"
+  key_file: "data/identity_vault.key"
+  auto_generate_key: true
+
+midnight_protocol:
+  enabled: true
+  schedule_time: "00:00"
+  git_remote: "origin"
+  git_branch: "main"
+  auto_push: true
+  commit_message_prefix: "Nightly auto-backup [Midnight Protocol]"

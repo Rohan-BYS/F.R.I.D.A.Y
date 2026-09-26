@@ -1,0 +1,61 @@
+# F.R.I.D.A.Y. — .gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+.mypy_cache/
+.pytest_cache/
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Runtime Data (keep structure, ignore generated data)
+data/friday_state.db
+data/friday_state.db-wal
+data/friday_state.db-shm
+data/identity_vault.enc
+data/identity_vault.key
+data/friday_config.json
+data/vector_brain/
+data/memory_snapshot.json
+data/forge_sandbox/
+logs/
+workspace/
+child_builds/
+
+# Secrets
+.env
+*.key
+
+# Node modules (Open-WhatsApp MCP)
+node_modules/
+open-whatsapp-mcp/node_modules/
+open-whatsapp-mcp/.node-persist/
+
+# Agentica Browser runtime
+agentica/venv/
+agentica/__pycache__/
+
+# Playwright
+playwright-report/
+test-results/

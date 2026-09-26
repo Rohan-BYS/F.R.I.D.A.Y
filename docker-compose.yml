@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  friday-core:
+    build: .
+    container_name: friday_core_sandbox
+    image: friday-omni-core:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080" # Webhook Nexus / FastAPI
+      - "8501:8501" # Streamlit Dashboard
+    volumes:
+      - .:/workspace
+      - friday_memory:/workspace/data
+    environment:
+      - PYTHONUNBUFFERED=1
+      # Note: GUI applications (PyQt6 HUD) inside Docker on Windows require WSLg or an X11 server like VcXsrv.
+      # If using WSLg on Windows 11, these environments pass the display through:
+      - DISPLAY=${DISPLAY:-:0}
+      - WAYLAND_DISPLAY=${WAYLAND_DISPLAY}
+      - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
+      - PULSE_SERVER=${PULSE_SERVER}
+    # To enable hardware acceleration and audio inside Docker, we set IPC to host
+    ipc: host
+
+volumes:
+  friday_memory:

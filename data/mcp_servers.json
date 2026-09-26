@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "C:\\Users\\U1\\Desktop\\F.R.I.D.A.Y\\workspace"],
+      "description": "Local workspace file system access"
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "description": "Persistent knowledge graph memory"
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"],
+      "description": "High-fidelity HTML and Markdown web fetching"
+    },
+    "open-whatsapp": {
+      "command": "node",
+      "args": ["C:\\Users\\U1\\Desktop\\open-whatsapp-mcp\\src\\mcp-server.js"],
+      "description": "WhatsApp automation and messaging"
+    }
+  }
+}

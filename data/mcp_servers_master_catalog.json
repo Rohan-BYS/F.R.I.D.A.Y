@@ -1,0 +1,144 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "F.R.I.D.A.Y. Master MCP Server Catalog. Copy required servers into data/mcp_servers.json and add your API keys.",
+  "mcpServers": {
+    "microsoft_365": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-microsoft-graph"],
+      "env": {
+        "CLIENT_ID": "YOUR_AZURE_APP_CLIENT_ID",
+        "CLIENT_SECRET": "YOUR_AZURE_APP_CLIENT_SECRET",
+        "TENANT_ID": "YOUR_AZURE_TENANT_ID"
+      },
+      "category": "office_productivity",
+      "description": "Microsoft Office 365 (Word, Excel, Outlook email, OneDrive, SharePoint, Teams calendars)"
+    },
+    "google_workspace": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-google-drive"],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/service-account.json"
+      },
+      "category": "office_productivity",
+      "description": "Google Drive, Google Docs, Google Sheets, Gmail, and Google Calendar management"
+    },
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-notion"],
+      "env": {
+        "NOTION_API_KEY": "YOUR_NOTION_INTEGRATION_TOKEN"
+      },
+      "category": "office_productivity",
+      "description": "Notion workspace, pages, databases, kanban boards, and document management"
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "xoxb-YOUR-TOKEN",
+        "SLACK_TEAM_ID": "T01234567"
+      },
+      "category": "team_communication",
+      "description": "Slack channels, direct messages, thread replies, and workspace notifications"
+    },
+    "cloudflare": {
+      "command": "npx",
+      "args": ["-y", "@cloudflare/mcp-server-cloudflare"],
+      "env": {
+        "CLOUDFLARE_API_TOKEN": "YOUR_CLOUDFLARE_TOKEN",
+        "CLOUDFLARE_ACCOUNT_ID": "YOUR_ACCOUNT_ID"
+      },
+      "category": "hosting_and_web_infrastructure",
+      "description": "Cloudflare DNS records, Cloudflare Pages deployments, Workers, KV storage, D1 databases, and CDN cache purging"
+    },
+    "vercel": {
+      "command": "npx",
+      "args": ["-y", "mcp-server-vercel"],
+      "env": {
+        "VERCEL_API_TOKEN": "YOUR_VERCEL_TOKEN",
+        "VERCEL_PROJECT_ID": "YOUR_PROJECT_ID"
+      },
+      "category": "hosting_and_web_infrastructure",
+      "description": "Vercel website deployments, build logs, domain bindings, and serverless environment variables"
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_YOUR_TOKEN"
+      },
+      "category": "development_and_cicd",
+      "description": "GitHub repository management, issues, pull requests, branch protection, CI/CD actions, and commits"
+    },
+    "supabase": {
+      "command": "npx",
+      "args": ["-y", "@supabase/mcp-server-supabase"],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "sbp_YOUR_TOKEN"
+      },
+      "category": "backend_and_database",
+      "description": "Supabase PostgreSQL database migrations, table operations, Edge Functions, Auth users, and S3 storage"
+    },
+    "docker": {
+      "command": "python",
+      "args": ["-m", "mcp_server_docker"],
+      "category": "infrastructure",
+      "description": "Local Docker container management, image building, volume mounting, and container status monitoring"
+    },
+    "wordpress": {
+      "command": "npx",
+      "args": ["-y", "mcp-server-wordpress"],
+      "env": {
+        "WP_BASE_URL": "https://yourwebsite.com",
+        "WP_USERNAME": "admin",
+        "WP_APPLICATION_PASSWORD": "YOUR_APP_PASSWORD"
+      },
+      "category": "website_development_and_cms",
+      "description": "WordPress CMS automation: post creation, page updates, SEO metadata injection, media uploads, and plugin status"
+    },
+    "puppeteer_browser": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
+      "category": "browser_automation_and_scraping",
+      "description": "Headless Chrome browser automation: screenshots, form submission, SPA rendering, and UI scraping"
+    },
+    "stripe": {
+      "command": "npx",
+      "args": ["-y", "@stripe/mcp"],
+      "env": {
+        "STRIPE_SECRET_KEY": "sk_live_YOUR_KEY"
+      },
+      "category": "e_commerce_and_billing",
+      "description": "Stripe customers, subscription lifecycles, invoices, payment intents, and refund processing"
+    },
+    "shopify": {
+      "command": "npx",
+      "args": ["-y", "mcp-server-shopify"],
+      "env": {
+        "SHOPIFY_STORE_DOMAIN": "yourstore.myshopify.com",
+        "SHOPIFY_ACCESS_TOKEN": "shpat_YOUR_TOKEN"
+      },
+      "category": "e_commerce_and_billing",
+      "description": "Shopify store management: product catalog, inventory tracking, customer orders, and discount codes"
+    },
+    "hubspot": {
+      "command": "npx",
+      "args": ["-y", "mcp-server-hubspot"],
+      "env": {
+        "HUBSPOT_ACCESS_TOKEN": "pat-na1-YOUR-TOKEN"
+      },
+      "category": "crm_and_marketing_automation",
+      "description": "HubSpot CRM contacts, deals pipeline, email marketing campaign performance, and lead scoring"
+    },
+    "google_analytics_and_search_console": {
+      "command": "npx",
+      "args": ["-y", "mcp-server-google-search-console"],
+      "env": {
+        "GOOGLE_CLIENT_EMAIL": "service-account@project.iam.gserviceaccount.com",
+        "GOOGLE_PRIVATE_KEY": "-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----\\n"
+      },
+      "category": "digital_marketing_and_analytics",
+      "description": "Google Search Console search queries, CTR, impressions, index coverage, and GA4 visitor engagement events"
+    }
+  }
+}

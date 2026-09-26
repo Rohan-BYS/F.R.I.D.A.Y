@@ -1,0 +1,50 @@
+# F.R.I.D.A.Y. Master Dependencies
+# Core Engine & API
+pydantic>=2.0.0
+httpx>=0.24.0
+
+# LLM Providers (Add specific SDKs as needed, routing handled internally)
+openai
+anthropic
+google-generativeai
+
+# Omniscient Search & Archives
+beautifulsoup4
+duckduckgo-search
+
+# Computer Use & GUI Control
+pyautogui
+pillow
+playwright
+
+# Senses (Voice, Hearing, Telegram)
+faster-whisper
+edge-tts
+python-telegram-bot
+SpeechRecognition
+# Note: pyaudio requires system-level PortAudio binaries
+
+# Memory & Vector DB
+chromadb
+sqlite3; python_version < '3.0' # Built-in for Python 3, just illustrative
+
+# Autonomy & Scheduling
+apscheduler
+
+# Webhook Nexus & Dashboards
+fastapi
+uvicorn
+streamlit
+
+# Development & Testing
+pytest
+pytest-asyncio
+
+# Interactive Setup & Terminal UI
+rich
+prompt_toolkit
+
+# Desktop HUD & Audio
+PyQt6
+sounddevice
+numpy
