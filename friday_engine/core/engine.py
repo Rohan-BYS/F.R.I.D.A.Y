@@ -320,6 +320,29 @@ class FridayEngine:
         self.tool_registry.register("scaffold_docker_service", scaffold_docker_service)
         self.tool_registry.register("search_freelance_tasks", search_freelance_tasks)
 
+        # Register Human-Like Nightly Introspection & Growth Tools
+        def run_nightly_introspection():
+            """Reviews daily errors, synthesizes root causes, and patches EVOLUTION_CODEX.md like a human learner."""
+            from scripts.midnight_introspection import NightlyIntrospectionEngine
+            engine = NightlyIntrospectionEngine()
+            return engine.reflect_and_correct()
+
+        def build_backlink_campaign(url: str, keyword: str, count: int = 50):
+            """Formulates an optimized 50-backlink distribution campaign with natural anchor text."""
+            from scripts.autonomous_backlink_builder import AutonomousBacklinkBuilder
+            builder = AutonomousBacklinkBuilder()
+            return builder.plan_campaign(url, keyword=keyword, count=count)
+
+        def prepare_notebooklm_source(topic: str, content: str):
+            """Prepares high-density research source document formatted for Google NotebookLM Audio Overview generation."""
+            from scripts.notebooklm_audio_bridge import NotebookLMBridge
+            bridge = NotebookLMBridge()
+            return bridge.prepare_source_document(topic, content)
+
+        self.tool_registry.register("run_nightly_introspection", run_nightly_introspection)
+        self.tool_registry.register("build_backlink_campaign", build_backlink_campaign)
+        self.tool_registry.register("prepare_notebooklm_source", prepare_notebooklm_source)
+
     def _initialize_session(self) -> None:
         """Create or ensure persistent session and inject Master Directive if empty."""
         self.memory.create_session(session_id=self.active_session_id, title="Main Session")

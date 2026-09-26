@@ -87,6 +87,8 @@ def show_help():
     table.add_row("friday chart <sym>", "Render candlestick chart PNG with 9/21 EMA & RSI")
     table.add_row("friday whale <name>", "Track super-investors (Buffett, Burry, Kedia, Damani)")
     table.add_row("friday health", "Check physical host CPU/GPU temperatures & disk space")
+    table.add_row("friday introspect", "Human-like daily reflection & self-correction loop")
+    table.add_row("friday backlink <url>", "Formulate 50 contextual backlinks across high-DA portals")
     table.add_row("friday curiosity", "Autonomous curiosity loop & frontier topic explorer")
     table.add_row("friday github-radar", "Scan trending AI & software repositories on GitHub")
     table.add_row("friday seo", "Generate programmatic long-tail SEO article clusters")
@@ -168,6 +170,14 @@ def main():
         elif cmd == "tech-scout":
             domain = sys.argv[2] if len(sys.argv) > 2 else "github.com"
             subprocess.run([sys.executable, os.path.join(project_root, "scripts", "competitor_tech_scout.py"), "--domain", domain])
+            return
+        elif cmd == "introspect" or cmd == "reflect":
+            subprocess.run([sys.executable, os.path.join(project_root, "scripts", "midnight_introspection.py"), "--run"])
+            return
+        elif cmd == "backlink" or cmd == "backlinks":
+            url = sys.argv[2] if len(sys.argv) > 2 else "https://github.com/Rohan-BYS/F.R.I.D.A.Y"
+            kw = sys.argv[3] if len(sys.argv) > 3 else "Autonomous AI Agent"
+            subprocess.run([sys.executable, os.path.join(project_root, "scripts", "autonomous_backlink_builder.py"), "--url", url, "--keyword", kw])
             return
         elif cmd == "help" or cmd == "--help" or cmd == "-h":
             show_help()

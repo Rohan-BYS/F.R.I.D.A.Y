@@ -416,6 +416,11 @@ SYNC_CMD="0 */6 * * * cd $FRIDAY_HOME && $FRIDAY_HOME/.venv/bin/python friday-up
 (crontab -l 2>/dev/null | grep -v "upstream-sync"; echo "$SYNC_CMD") | crontab -
 ok "Upstream Sync cron job installed (every 6 hours — auto-merges updates)."
 
+# Human-Like Nightly Introspection & Self-Correction (daily at 02:00 AM)
+INTROSPECT_CMD="0 2 * * * cd $FRIDAY_HOME && $FRIDAY_HOME/.venv/bin/python scripts/midnight_introspection.py --run >> $FRIDAY_HOME/logs/introspection.log 2>&1"
+(crontab -l 2>/dev/null | grep -v "midnight_introspection"; echo "$INTROSPECT_CMD") | crontab -
+ok "Human-Like Nightly Introspection cron job installed (daily at 02:00 AM)."
+
 # ============================================================================
 # PHASE 10: Register Global `friday` Command & Initialize
 # ============================================================================
@@ -486,7 +491,10 @@ if [ -f "$FRIDAY_HOME/scripts/seed_omni_skills.py" ]; then
     python "$FRIDAY_HOME/scripts/seed_agency_marketing_skills.py" 2>/dev/null || true
     python "$FRIDAY_HOME/scripts/seed_trading_financial_skills.py" 2>/dev/null || true
     python "$FRIDAY_HOME/scripts/seed_market_intelligence_skills.py" 2>/dev/null || true
-    ok "Skills library seeded."
+    python "$FRIDAY_HOME/scripts/seed_advanced_ecosystem_skills.py" 2>/dev/null || true
+    python "$FRIDAY_HOME/scripts/seed_frontier_skills.py" 2>/dev/null || true
+    python "$FRIDAY_HOME/scripts/seed_introspection_and_mcp_skills.py" 2>/dev/null || true
+    ok "Skills library seeded (109+ production skills)."
 fi
 
 # ============================================================================

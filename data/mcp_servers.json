@@ -2,7 +2,7 @@
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "C:\\Users\\U1\\Desktop\\F.R.I.D.A.Y\\workspace"],
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "workspace"],
       "description": "Local workspace file system access"
     },
     "memory": {
@@ -11,13 +11,28 @@
       "description": "Persistent knowledge graph memory"
     },
     "fetch": {
-      "command": "uvx",
-      "args": ["mcp-server-fetch"],
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
       "description": "High-fidelity HTML and Markdown web fetching"
+    },
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git"],
+      "description": "Local git repository and version control management"
+    },
+    "sqlite": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sqlite", "data/market_chronos/market_chronos.db"],
+      "description": "Local SQLite database SQL querying engine"
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
+      "description": "Headless browser automation for form submission, web apps & backlink verification"
     },
     "open-whatsapp": {
       "command": "node",
-      "args": ["C:\\Users\\U1\\Desktop\\open-whatsapp-mcp\\src\\mcp-server.js"],
+      "args": ["../open-whatsapp-mcp/src/mcp-server.js"],
       "description": "WhatsApp automation and messaging"
     }
   }
