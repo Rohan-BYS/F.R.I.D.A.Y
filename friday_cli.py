@@ -83,6 +83,10 @@ def show_help():
     table.add_row("friday update", "Self-update from GitHub + refresh dependencies")
     table.add_row("friday hud", "Launch the desktop orb visualizer")
     table.add_row("friday market", "5m candle + news surveillance & predictive analysis")
+    table.add_row("friday paper-trade", "Virtual paper trading & P&L backtesting engine")
+    table.add_row("friday chart <sym>", "Render candlestick chart PNG with 9/21 EMA & RSI")
+    table.add_row("friday whale <name>", "Track super-investors (Buffett, Burry, Kedia, Damani)")
+    table.add_row("friday health", "Check physical host CPU/GPU temperatures & disk space")
     table.add_row("friday clean-pdfs", "Delete raw PDFs to free disk space while keeping structured data")
     table.add_row("friday evolve", "Generate a flawless Child Version (Project Phoenix)")
     table.add_row("friday sync", "Auto-merge new features from upstream AI agents")
@@ -134,6 +138,19 @@ def main():
             return
         elif cmd == "clean-pdfs" or cmd == "purge-pdfs":
             subprocess.run([sys.executable, os.path.join(project_root, "scripts", "financial_filings_harvester.py"), "--clean-pdfs"])
+            return
+        elif cmd == "paper-trade" or cmd == "paper":
+            subprocess.run([sys.executable, os.path.join(project_root, "scripts", "paper_trading_simulator.py")] + sys.argv[2:])
+            return
+        elif cmd == "chart":
+            sym = sys.argv[2] if len(sys.argv) > 2 else "NVDA"
+            subprocess.run([sys.executable, os.path.join(project_root, "scripts", "visual_chart_plotter.py"), "--symbol", sym] + sys.argv[3:])
+            return
+        elif cmd == "health" or cmd == "thermals":
+            subprocess.run([sys.executable, os.path.join(project_root, "scripts", "hardware_thermal_sentinel.py")] + sys.argv[2:])
+            return
+        elif cmd == "whale" or cmd == "whales":
+            subprocess.run([sys.executable, os.path.join(project_root, "scripts", "whale_investor_tracker.py")] + sys.argv[2:])
             return
         elif cmd == "help" or cmd == "--help" or cmd == "-h":
             show_help()

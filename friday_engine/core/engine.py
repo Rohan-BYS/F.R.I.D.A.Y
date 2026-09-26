@@ -220,6 +220,54 @@ class FridayEngine:
         self.tool_registry.register("scan_live_financial_news", scan_live_financial_news)
         self.tool_registry.register("harvest_company_financials", harvest_company_financials)
 
+        # Register Advanced Ecosystem Tools
+        def paper_trade(action: str = "summary", symbol: str = None, price: float = None, qty: float = None, sl: float = None, tp: float = None):
+            """Executes virtual paper trades (buy/sell) or returns active portfolio P&L summary."""
+            from scripts.paper_trading_simulator import PaperTradingSimulator
+            sim = PaperTradingSimulator()
+            if action.lower() == "buy":
+                return sim.buy(symbol, price=price, qty=qty, sl=sl, tp=tp)
+            elif action.lower() == "sell":
+                return sim.sell(symbol, price=price)
+            return sim.get_portfolio_summary()
+
+        def plot_stock_chart(symbol: str, period: str = "5d", interval: str = "15m"):
+            """Renders a dark-mode candlestick chart PNG with 9/21 EMA and RSI sub-panels."""
+            from scripts.visual_chart_plotter import VisualChartPlotter
+            plotter = VisualChartPlotter()
+            return plotter.plot_candlestick_chart(symbol, period=period, interval=interval)
+
+        def track_whale_investors(name: str = None):
+            """Monitors portfolio holdings of super-investors (Buffett, Burry, Kedia, Damani)."""
+            from scripts.whale_investor_tracker import WhaleInvestorTracker
+            tracker = WhaleInvestorTracker()
+            return tracker.get_whale_profile(name) if name else tracker.list_all_whales()
+
+        def calculate_options_max_pain(symbol: str):
+            """Calculates Put-Call Ratio (PCR) and Max Pain strike level for options expiry."""
+            from scripts.options_max_pain_radar import OptionsMaxPainRadar
+            radar = OptionsMaxPainRadar()
+            return radar.analyze_options_chain(symbol)
+
+        def get_corporate_actions_calendar(symbol: str):
+            """Fetches upcoming ex-dividend dates, stock splits, and payout ratios."""
+            from scripts.corporate_actions_calendar import CorporateActionsCalendar
+            cal = CorporateActionsCalendar()
+            return cal.get_corporate_actions(symbol)
+
+        def check_host_hardware_health():
+            """Monitors physical host machine CPU/GPU temperatures, RAM, and disk storage."""
+            from scripts.hardware_thermal_sentinel import HardwareThermalSentinel
+            sentinel = HardwareThermalSentinel()
+            return sentinel.get_system_health()
+
+        self.tool_registry.register("paper_trade", paper_trade)
+        self.tool_registry.register("plot_stock_chart", plot_stock_chart)
+        self.tool_registry.register("track_whale_investors", track_whale_investors)
+        self.tool_registry.register("calculate_options_max_pain", calculate_options_max_pain)
+        self.tool_registry.register("get_corporate_actions_calendar", get_corporate_actions_calendar)
+        self.tool_registry.register("check_host_hardware_health", check_host_hardware_health)
+
     def _initialize_session(self) -> None:
         """Create or ensure persistent session and inject Master Directive if empty."""
         self.memory.create_session(session_id=self.active_session_id, title="Main Session")
