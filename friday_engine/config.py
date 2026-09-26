@@ -30,7 +30,7 @@ class SystemConfig(BaseModel):
 
 class GeminiConfig(BaseModel):
     api_key: str = Field(default_factory=lambda: os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY", ""))
-    model: str = "gemini-2.0-flash"
+    model: str = "gemini-2.5-flash"
     timeout: int = 30
     temperature: float = 0.2
 
