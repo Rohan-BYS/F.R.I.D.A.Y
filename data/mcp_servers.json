@@ -146,6 +146,20 @@
       "env": {
         "CANVA_API_KEY": ""
       }
+    },
+    "mcp-pyautogui-server": {
+      "command": "uvx",
+      "args": [
+        "mcp-pyautogui-server"
+      ],
+      "description": "Local Desktop RPA: Controls mouse, keyboard, and takes screenshots via PyAutoGUI."
+    },
+    "open-computer-use": {
+      "command": "uvx",
+      "args": [
+        "open-computer-use"
+      ],
+      "description": "Advanced OS-level computer use using accessibility APIs for accurate clicking and typing."
     }
   }
 }

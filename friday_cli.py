@@ -96,6 +96,7 @@ def show_help():
     table.add_row("friday clean-pdfs", "Delete raw PDFs to free disk space while keeping structured data")
     table.add_row("friday evolve", "Generate a flawless Child Version (Project Phoenix)")
     table.add_row("friday sync", "Auto-merge new features from upstream AI agents")
+    table.add_row("friday api", "Start F.R.I.D.A.Y. as a background REST API server")
     table.add_row("friday scan", "Scan the AI landscape for new frameworks to learn")
     table.add_row("friday help", "Show this help message")
     console.print(table)
@@ -178,6 +179,9 @@ def main():
             url = sys.argv[2] if len(sys.argv) > 2 else "https://github.com/Rohan-BYS/F.R.I.D.A.Y"
             kw = sys.argv[3] if len(sys.argv) > 3 else "Autonomous AI Agent"
             subprocess.run([sys.executable, os.path.join(project_root, "scripts", "autonomous_backlink_builder.py"), "--url", url, "--keyword", kw])
+            return
+        elif cmd == "api":
+            subprocess.run([sys.executable, os.path.join(project_root, "friday_api_server.py")])
             return
         elif cmd == "help" or cmd == "--help" or cmd == "-h":
             show_help()
