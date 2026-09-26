@@ -1,0 +1,12 @@
+{
+  "domain": "stripe.com",
+  "url": "https://stripe.com",
+  "inspected_at": "2026-09-26T18:30:00.390256",
+  "server": "nginx",
+  "cdn": "Direct / Unknown",
+  "frontend_frameworks": [
+    "React / Next.js"
+  ],
+  "analytics_and_trackers": [],
+  "cms": "Shopify"
+}

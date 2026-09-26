@@ -268,6 +268,58 @@ class FridayEngine:
         self.tool_registry.register("get_corporate_actions_calendar", get_corporate_actions_calendar)
         self.tool_registry.register("check_host_hardware_health", check_host_hardware_health)
 
+        # Register Frontier Expansion Tools (On-Demand / Dormant by default)
+        def explore_curiosity_topic(topic: str = None):
+            """Explores unfamiliar frontier topics and plans candidate skills."""
+            from scripts.friday_curiosity_engine import FridayCuriosityEngine
+            engine = FridayCuriosityEngine()
+            return engine.explore_topic(topic) if topic else engine.run_auto_exploration()
+
+        def scan_github_trending(language: str = "python"):
+            """Scans GitHub trending repositories to discover breakthrough AI architectures."""
+            from scripts.github_trending_radar import GitHubTrendingRadar
+            radar = GitHubTrendingRadar()
+            return radar.fetch_trending(language=language)
+
+        def generate_faceless_video(topic: str):
+            """Generates vertical video script, neural TTS audio, and FFmpeg composition pipeline."""
+            import asyncio
+            from scripts.faceless_video_pipeline import FacelessVideoPipeline
+            pipeline = FacelessVideoPipeline()
+            return asyncio.run(pipeline.generate_production_package(topic))
+
+        def generate_programmatic_seo(keyword: str):
+            """Synthesizes structured long-tail SEO article and Schema.org JSON-LD."""
+            from scripts.programmatic_seo_engine import ProgrammaticSEOEngine
+            seo = ProgrammaticSEOEngine()
+            return seo.generate_article(keyword)
+
+        def inspect_competitor_tech(domain: str):
+            """Reverse-engineers website CMS, frontend framework, CDN, and analytics stack."""
+            from scripts.competitor_tech_scout import CompetitorTechScout
+            scout = CompetitorTechScout()
+            return scout.inspect_domain(domain)
+
+        def scaffold_docker_service(service_key: str):
+            """Generates local docker-compose stacks for SearXNG, n8n, or Redis."""
+            from scripts.docker_service_orchestrator import DockerServiceOrchestrator
+            orch = DockerServiceOrchestrator()
+            return orch.generate_service(service_key)
+
+        def search_freelance_tasks(query: str):
+            """Searches remote freelance automation opportunities and drafts proposals."""
+            from scripts.freelance_job_radar import FreelanceJobRadar
+            radar = FreelanceJobRadar()
+            return radar.search_tasks(query)
+
+        self.tool_registry.register("explore_curiosity_topic", explore_curiosity_topic)
+        self.tool_registry.register("scan_github_trending", scan_github_trending)
+        self.tool_registry.register("generate_faceless_video", generate_faceless_video)
+        self.tool_registry.register("generate_programmatic_seo", generate_programmatic_seo)
+        self.tool_registry.register("inspect_competitor_tech", inspect_competitor_tech)
+        self.tool_registry.register("scaffold_docker_service", scaffold_docker_service)
+        self.tool_registry.register("search_freelance_tasks", search_freelance_tasks)
+
     def _initialize_session(self) -> None:
         """Create or ensure persistent session and inject Master Directive if empty."""
         self.memory.create_session(session_id=self.active_session_id, title="Main Session")

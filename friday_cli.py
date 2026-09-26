@@ -87,6 +87,10 @@ def show_help():
     table.add_row("friday chart <sym>", "Render candlestick chart PNG with 9/21 EMA & RSI")
     table.add_row("friday whale <name>", "Track super-investors (Buffett, Burry, Kedia, Damani)")
     table.add_row("friday health", "Check physical host CPU/GPU temperatures & disk space")
+    table.add_row("friday curiosity", "Autonomous curiosity loop & frontier topic explorer")
+    table.add_row("friday github-radar", "Scan trending AI & software repositories on GitHub")
+    table.add_row("friday seo", "Generate programmatic long-tail SEO article clusters")
+    table.add_row("friday tech-scout <domain>", "Reverse-engineer website frameworks, CMS & CDN")
     table.add_row("friday clean-pdfs", "Delete raw PDFs to free disk space while keeping structured data")
     table.add_row("friday evolve", "Generate a flawless Child Version (Project Phoenix)")
     table.add_row("friday sync", "Auto-merge new features from upstream AI agents")
@@ -151,6 +155,19 @@ def main():
             return
         elif cmd == "whale" or cmd == "whales":
             subprocess.run([sys.executable, os.path.join(project_root, "scripts", "whale_investor_tracker.py")] + sys.argv[2:])
+            return
+        elif cmd == "curiosity":
+            subprocess.run([sys.executable, os.path.join(project_root, "scripts", "friday_curiosity_engine.py")] + sys.argv[2:])
+            return
+        elif cmd == "github-radar" or cmd == "radar":
+            subprocess.run([sys.executable, os.path.join(project_root, "scripts", "github_trending_radar.py")] + sys.argv[2:])
+            return
+        elif cmd == "seo":
+            subprocess.run([sys.executable, os.path.join(project_root, "scripts", "programmatic_seo_engine.py")] + sys.argv[2:])
+            return
+        elif cmd == "tech-scout":
+            domain = sys.argv[2] if len(sys.argv) > 2 else "github.com"
+            subprocess.run([sys.executable, os.path.join(project_root, "scripts", "competitor_tech_scout.py"), "--domain", domain])
             return
         elif cmd == "help" or cmd == "--help" or cmd == "-h":
             show_help()
