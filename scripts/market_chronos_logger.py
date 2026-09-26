@@ -211,7 +211,9 @@ class MarketChronosLogger:
         self.symbols = symbols or DEFAULT_WATCHLIST
         self.interval = interval
         self.harvester = MarketNewsHarvester()
+        self.db_path = DATA_DIR / "market_chronos.db"
         self.excel_path = DATA_DIR / f"market_chronos_master_{self.interval}.xlsx"
+        self._init_sqlite_db()
 
     def fetch_latest_candle(self, symbol: str) -> Optional[Dict[str, Any]]:
         """Fetch the most recent closed candlestick via yfinance."""
@@ -299,26 +301,122 @@ class MarketChronosLogger:
             print("  No candle data available (market may be closed).")
             return
 
-        # 3. Append to Master Excel File
-        new_df = pd.DataFrame(cycle_records)
-        self._append_to_excel(new_df)
-        print(f"  ✓ Logged {len(cycle_records)} symbols to {self.excel_path.name}")
+        # 3. Insert into Ultra-Lightweight SQLite Database (WAL Mode)
+        self._insert_to_sqlite(cycle_records)
+        print(f"  ✓ Logged {len(cycle_records)} symbols to SQLite DB ({self.db_path.name})")
 
-    def _append_to_excel(self, new_df):
-        """Thread-safe append into Excel sheet using pandas/openpyxl."""
-        import pandas as pd
+    def _init_sqlite_db(self):
+        """Initializes SQLite database with WAL mode for crash-resilience and zero-overhead concurrency."""
+        import sqlite3
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute("PRAGMA journal_mode=WAL;")
+        cursor.execute("PRAGMA synchronous=NORMAL;")
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS market_chronos (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT NOT NULL,
+                symbol TEXT NOT NULL,
+                interval TEXT DEFAULT '5m',
+                open REAL,
+                high REAL,
+                low REAL,
+                close REAL,
+                volume INTEGER,
+                candle_pattern TEXT,
+                rsi_14 REAL,
+                ema_9 REAL,
+                ema_21 REAL,
+                news_event TEXT,
+                news_sentiment REAL,
+                financial_report_path TEXT,
+                key_financial_metrics TEXT,
+                UNIQUE(timestamp, symbol, interval) ON CONFLICT REPLACE
+            );
+        """)
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_sym_time ON market_chronos (symbol, timestamp);")
+        conn.commit()
+        conn.close()
 
-        if self.excel_path.exists():
-            try:
-                existing_df = pd.read_excel(self.excel_path, engine="openpyxl")
-                combined_df = pd.concat([existing_df, new_df], ignore_index=True)
-                # Deduplicate identical Timestamp + Symbol rows
-                combined_df.drop_duplicates(subset=["Timestamp", "Symbol"], keep="last", inplace=True)
-                combined_df.to_excel(self.excel_path, index=False, engine="openpyxl")
-            except Exception:
-                new_df.to_excel(self.excel_path, index=False, engine="openpyxl")
+    def _insert_to_sqlite(self, records: List[Dict[str, Any]]):
+        """Atomic batch insert into SQLite database."""
+        import sqlite3
+        self._init_sqlite_db()
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+
+        sql = """
+            INSERT INTO market_chronos (
+                timestamp, symbol, interval, open, high, low, close, volume,
+                candle_pattern, rsi_14, ema_9, ema_21, news_event, news_sentiment,
+                financial_report_path, key_financial_metrics
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(timestamp, symbol, interval) DO UPDATE SET
+                open=excluded.open, high=excluded.high, low=excluded.low, close=excluded.close,
+                volume=excluded.volume, candle_pattern=excluded.candle_pattern,
+                rsi_14=excluded.rsi_14, ema_9=excluded.ema_9, ema_21=excluded.ema_21,
+                news_event=excluded.news_event, news_sentiment=excluded.news_sentiment,
+                financial_report_path=excluded.financial_report_path,
+                key_financial_metrics=excluded.key_financial_metrics;
+        """
+
+        tuples = [
+            (
+                r.get("Timestamp"), r.get("Symbol"), self.interval,
+                r.get("Open"), r.get("High"), r.get("Low"), r.get("Close"), r.get("Volume"),
+                r.get("Candle_Pattern"), r.get("RSI_14"), r.get("EMA_9"), r.get("EMA_21"),
+                r.get("News_Event"), r.get("News_Sentiment"),
+                r.get("Financial_Report_Path"), r.get("Key_Financial_Metrics")
+            )
+            for r in records
+        ]
+
+        cursor.executemany(sql, tuples)
+        conn.commit()
+        conn.close()
+
+    def export_data(self, fmt: str = "excel", symbol: Optional[str] = None, output_path: Optional[str] = None) -> str:
+        """
+        Exports data on-demand from SQLite into Excel, CSV, or Apache Parquet.
+        Zero overhead during continuous operation; files are only created when you ask!
+        """
+        import sqlite3
+        try:
+            import pandas as pd
+        except ImportError:
+            return "Error: pandas is required for export."
+
+        conn = sqlite3.connect(self.db_path)
+        query = "SELECT * FROM market_chronos"
+        params = []
+        if symbol:
+            query += " WHERE symbol = ?"
+            params.append(symbol)
+        query += " ORDER BY timestamp ASC;"
+
+        df = pd.read_sql_query(query, conn, params=params)
+        conn.close()
+
+        if df.empty:
+            return "No records found in database to export."
+
+        timestamp_str = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        target_stem = f"market_chronos_export_{timestamp_str}"
+
+        if fmt == "excel":
+            out_file = Path(output_path) if output_path else DATA_DIR / f"{target_stem}.xlsx"
+            df.to_excel(out_file, index=False, engine="openpyxl")
+            return f"Exported {len(df)} rows to Excel: {out_file}"
+        elif fmt == "csv":
+            out_file = Path(output_path) if output_path else DATA_DIR / f"{target_stem}.csv"
+            df.to_csv(out_file, index=False)
+            return f"Exported {len(df)} rows to CSV: {out_file}"
+        elif fmt == "parquet":
+            out_file = Path(output_path) if output_path else DATA_DIR / f"{target_stem}.parquet"
+            df.to_parquet(out_file, index=False)
+            return f"Exported {len(df)} rows to Apache Parquet: {out_file}"
         else:
-            new_df.to_excel(self.excel_path, index=False, engine="openpyxl")
+            return f"Unknown format: {fmt}. Supported: excel, csv, parquet."
 
 
 def main():
@@ -326,12 +424,20 @@ def main():
     parser.add_argument("--symbols", nargs="+", default=DEFAULT_WATCHLIST, help="Stock symbols to track")
     parser.add_argument("--interval", type=str, default="5m", choices=["1m", "5m", "10m", "15m", "1h"], help="Candle timeframe")
     parser.add_argument("--daemon", action="store_true", help="Run continuously in background during market hours")
+    parser.add_argument("--export", type=str, choices=["excel", "csv", "parquet"], help="Export database to Excel, CSV, or Parquet")
+    parser.add_argument("--export-symbol", type=str, help="Specific symbol to filter during export")
+    parser.add_argument("--output-path", type=str, help="Custom export file destination")
     args = parser.parse_args()
 
     logger = MarketChronosLogger(symbols=args.symbols, interval=args.interval)
 
+    if args.export:
+        res = logger.export_data(fmt=args.export, symbol=args.export_symbol, output_path=args.output_path)
+        print(res)
+        return
+
     if args.daemon:
-        print(f"Market Chronos Daemon active. Monitoring {len(args.symbols)} symbols every {args.interval}...")
+        print(f"Market Chronos Daemon active (SQLite WAL). Monitoring {len(args.symbols)} symbols every {args.interval}...")
         while True:
             logger.log_cycle()
             sleep_sec = 300 if args.interval == "5m" else 600

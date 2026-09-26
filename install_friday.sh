@@ -75,6 +75,7 @@ sudo apt-get install -y \
     libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
     libxcb-render-util0 libxcb-shape0 \
     xvfb x11-utils xdotool wmctrl scrot \
+    sqlite3 sqlitebrowser \
     python3-tk jq unzip \
     2>/dev/null
 

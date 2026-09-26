@@ -28,18 +28,32 @@ DATA_DIR = PROJECT_ROOT / "data" / "market_chronos"
 class MarketCorrelationAnalyst:
     """Performs Event-Study and Price-News Correlation on logged datasets."""
 
-    def __init__(self, excel_path: Optional[Path] = None):
+    def __init__(self, db_path: Optional[Path] = None, excel_path: Optional[Path] = None):
+        self.db_path = db_path or (DATA_DIR / "market_chronos.db")
         self.excel_path = excel_path or (DATA_DIR / "market_chronos_master_5m.xlsx")
 
     def load_data(self):
-        """Loads and validates the master Excel dataset."""
+        """Loads dataset with priority on SQLite (WAL) for sub-millisecond speed, with Excel fallback."""
         try:
             import pandas as pd
-            if not self.excel_path.exists():
-                return None
-            return pd.read_excel(self.excel_path, engine="openpyxl")
+            # 1. Primary: Lightning-fast SQLite Database
+            if self.db_path.exists():
+                import sqlite3
+                conn = sqlite3.connect(self.db_path)
+                df = pd.read_sql_query("SELECT * FROM market_chronos ORDER BY timestamp ASC;", conn)
+                conn.close()
+                if not df.empty:
+                    # Normalize column casing for seamless compatibility
+                    df.columns = [c.capitalize() if c in ["symbol", "timestamp", "open", "high", "low", "close", "volume"] else c for c in df.columns]
+                    return df
+
+            # 2. Fallback: Excel File
+            if self.excel_path.exists():
+                return pd.read_excel(self.excel_path, engine="openpyxl")
+
+            return None
         except Exception as e:
-            print(f"Error loading Excel data: {e}")
+            print(f"Error loading market data: {e}")
             return None
 
     def analyze_symbol(self, symbol: str, df=None) -> Dict[str, Any]:

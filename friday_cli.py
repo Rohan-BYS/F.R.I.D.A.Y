@@ -126,6 +126,9 @@ def main():
                 subprocess.run([sys.executable, os.path.join(project_root, "scripts", "market_correlation_analyst.py")] + sys.argv[3:])
             elif subcmd == "track":
                 subprocess.run([sys.executable, os.path.join(project_root, "scripts", "market_chronos_logger.py"), "--daemon"] + sys.argv[3:])
+            elif subcmd == "export":
+                fmt = sys.argv[3].lower() if len(sys.argv) > 3 else "excel"
+                subprocess.run([sys.executable, os.path.join(project_root, "scripts", "market_chronos_logger.py"), "--export", fmt] + sys.argv[4:])
             else:
                 subprocess.run([sys.executable, os.path.join(project_root, "scripts", "market_chronos_logger.py")] + sys.argv[2:])
             return
